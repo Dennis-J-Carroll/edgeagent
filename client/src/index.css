@@ -213,8 +213,8 @@
   
   .aurora-bg {
     background: linear-gradient(135deg, 
-      rgba(106, 90, 255, 0.1), 
-      rgba(255, 90, 205, 0.1), 
+      rgb(255, 249, 239, 0.1), 
+      rgb(0, 62, 135, 0.1), 
       rgba(90, 205, 255, 0.1)
     );
     background-size: 400% 400%;
@@ -229,9 +229,9 @@
   }
   
   .glow-text {
-    text-shadow: 0 0 20px rgba(106, 90, 255, 0.5), 
-                 0 0 40px rgba(106, 90, 255, 0.3),
-                 0 0 60px rgba(106, 90, 255, 0.1);
+    text-shadow: 0 0 20px rgb(0, 97, 254, 0.5), 
+                 0 0 40px rgb(0, 97, 254, 0.3),
+                 0 0 60px rgb(0, 97, 254, 0.1);
   }
   
   .card-hover-3d {
