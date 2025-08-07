@@ -1,0 +1,595 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomic Edge - Self-Optimizing Network Agents</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/heroicons@2.0.16/24/outline/index.js" type="module"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'off-white': '#FAFAFA',
+                        'primary-gray': '#1F2937',
+                        'secondary-gray': '#6B7280',
+                        'accent-blue': '#3B82F6',
+                        'success-green': '#10B981',
+                        'border-gray': '#E5E7EB',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #FAFAFA;
+        }
+        .hover-lift {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .network-animation {
+            opacity: 0.6;
+            animation: pulse 3s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+    </style>
+</head>
+<body class="bg-off-white text-primary-gray">
+    
+    <!-- Navigation -->
+    <nav class="bg-white/80 backdrop-blur-sm border-b border-border-gray sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-accent-blue" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                    <span class="text-xl font-semibold">Autonomic Edge</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#demo" class="text-secondary-gray hover:text-primary-gray transition-colors">Live Demo</a>
+                    <a href="#use-cases" class="text-secondary-gray hover:text-primary-gray transition-colors">Use Cases</a>
+                    <a href="#docs" class="text-secondary-gray hover:text-primary-gray transition-colors">Documentation</a>
+                    <button class="bg-success-green text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        Request Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-white to-off-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <h1 class="text-5xl lg:text-6xl font-bold leading-tight">
+                        Real-time, self-optimizing 
+                        <span class="text-accent-blue">edge routers</span>
+                    </h1>
+                    <p class="text-xl text-secondary-gray leading-relaxed">
+                        Powered by eBPF. Tuned by AI. Proven in healthcare, defense, and remote ops.
+                    </p>
+                    <p class="text-lg text-secondary-gray">
+                        Replace reactive firewalls, static QoS, and human-tweaked routing with autonomous dataplane agents that evolve in real-time to meet your SLOs.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button class="bg-success-green text-white px-8 py-4 rounded-lg text-lg font-medium hover:bg-green-600 transition-colors">
+                            Request a Demo
+                        </button>
+                        <button class="bg-white text-primary-gray px-8 py-4 rounded-lg text-lg font-medium border border-border-gray hover:bg-gray-50 transition-colors">
+                            See Live Metrics
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Network Flow Visualization -->
+                <div class="relative h-96 bg-white rounded-xl shadow-sm border border-border-gray p-8">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <svg class="w-full h-full" viewBox="0 0 400 300">
+                            <!-- Nodes -->
+                            <circle cx="50" cy="150" r="12" fill="#3B82F6" class="network-animation" style="animation-delay: 0s"/>
+                            <circle cx="200" cy="80" r="12" fill="#10B981" class="network-animation" style="animation-delay: 0.5s"/>
+                            <circle cx="200" cy="220" r="12" fill="#10B981" class="network-animation" style="animation-delay: 1s"/>
+                            <circle cx="350" cy="150" r="12" fill="#F59E0B" class="network-animation" style="animation-delay: 1.5s"/>
+                            
+                            <!-- Connections -->
+                            <line x1="50" y1="150" x2="200" y2="80" stroke="#E5E7EB" stroke-width="2"/>
+                            <line x1="50" y1="150" x2="200" y2="220" stroke="#E5E7EB" stroke-width="2"/>
+                            <line x1="200" y1="80" x2="350" y2="150" stroke="#E5E7EB" stroke-width="2"/>
+                            <line x1="200" y1="220" x2="350" y2="150" stroke="#E5E7EB" stroke-width="2"/>
+                            
+                            <!-- Labels -->
+                            <text x="50" y="135" text-anchor="middle" class="text-xs fill-secondary-gray">Source</text>
+                            <text x="200" y="65" text-anchor="middle" class="text-xs fill-secondary-gray">eBPF</text>
+                            <text x="200" y="240" text-anchor="middle" class="text-xs fill-secondary-gray">AI Loop</text>
+                            <text x="350" y="135" text-anchor="middle" class="text-xs fill-secondary-gray">Target</text>
+                        </svg>
+                    </div>
+                    <div class="absolute bottom-4 left-4 text-sm text-secondary-gray">
+                        Real-time packet optimization
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Value Pillars -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Core Value Pillars</h2>
+                <p class="text-xl text-secondary-gray">Advanced network intelligence powered by cutting-edge technology</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Pillar 1 -->
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-border-gray hover-lift cursor-pointer">
+                    <div class="w-12 h-12 bg-accent-blue/10 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-accent-blue" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Autonomic Packet Intelligence</h3>
+                    <ul class="space-y-2 text-secondary-gray">
+                        <li>• Real-time control loop over XDP</li>
+                        <li>• Fitness-based mutation of routing, filtering, and mirroring</li>
+                        <li>• Deploys without kernel patching or reboot</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-border-gray hover-lift cursor-pointer">
+                    <div class="w-12 h-12 bg-success-green/10 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-success-green" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Deep Observability Built-In</h3>
+                    <ul class="space-y-2 text-secondary-gray">
+                        <li>• eBPF map metrics streamed via Cloudflare exporter to Prometheus</li>
+                        <li>• Grafana dashboards expose latency, drops, throughput, fitness curves</li>
+                        <li>• Correlates protocol behavior with objective performance</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-border-gray hover-lift cursor-pointer">
+                    <div class="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Simulation-Grade Confidence</h3>
+                    <ul class="space-y-2 text-secondary-gray">
+                        <li>• Labs validated in GNS3 & namespaces with traffic injectors</li>
+                        <li>• Failure injection, latency shaping, link saturation included</li>
+                        <li>• Compare "static config" vs "learned behavior" performance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section id="demo" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Live Demo Dashboard</h2>
+                <p class="text-xl text-secondary-gray">Real-time visualization of autonomous network optimization</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Grafana Dashboard Mockup -->
+                <div class="bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-white font-medium">Packet Flow Analytics</h3>
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-gray-800 rounded p-4">
+                            <div class="text-green-400 text-sm mb-2">Latency (p95): 11.2ms ↓ 71%</div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-green-400 h-2 rounded-full w-3/4"></div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800 rounded p-4">
+                            <div class="text-blue-400 text-sm mb-2">Throughput: 2.1 Gbps ↑ 23%</div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-blue-400 h-2 rounded-full w-4/5"></div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800 rounded p-4">
+                            <div class="text-yellow-400 text-sm mb-2">Drop Rate: 0.02% ↓ 89%</div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-yellow-400 h-2 rounded-full w-1/5"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mutation Log Console -->
+                <div class="bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-white font-medium">Genetic Algorithm Activity</h3>
+                        <div class="text-green-400 text-sm">● Live</div>
+                    </div>
+                    <div class="space-y-2 text-sm font-mono">
+                        <div class="text-green-400">[14:23:15] Generation 847: fitness improved 0.12%</div>
+                        <div class="text-blue-400">[14:23:16] Mutating UDP port filter rules...</div>
+                        <div class="text-yellow-400">[14:23:17] Policy update: drop_threshold=0.85</div>
+                        <div class="text-green-400">[14:23:18] Latency target achieved: 10.8ms</div>
+                        <div class="text-blue-400">[14:23:19] Evaluating population fitness...</div>
+                        <div class="text-green-400">[14:23:20] Best individual: score 0.94</div>
+                        <div class="text-purple-400">[14:23:21] Crossover: combining top performers</div>
+                        <div class="text-green-400">[14:23:22] New generation ready</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Grid -->
+    <section id="use-cases" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Real-World Applications</h2>
+                <p class="text-xl text-secondary-gray">Proven solutions across mission-critical environments</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Use Case Cards -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-border-gray hover-lift cursor-pointer">
+                    <div class="text-2xl mb-4">🏥</div>
+                    <h3 class="text-lg font-semibold mb-2">Remote Clinic Optimizer</h3>
+                    <p class="text-secondary-gray text-sm">Learns how to prioritize FHIR + PACS over VoIP + admin traffic</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-border-gray hover-lift cursor-pointer">
+                    <div class="text-2xl mb-4">🛡</div>
+                    <h3 class="text-lg font-semibold mb-2">DDoS Frontline Agent</h3>
+                    <p class="text-secondary-gray text-sm">Drops junk traffic in microseconds at ingress, evolves filters during attack</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-border-gray hover-lift cursor-pointer">
+                    <div class="text-2xl mb-4">🛰</div>
+                    <h3 class="text-lg font-semibold mb-2">Military/Edge Deployments</h3>
+                    <p class="text-secondary-gray text-sm">Tunnels around degraded links, rewrites routing on-site, no human in loop</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-border-gray hover-lift cursor-pointer">
+                    <div class="text-2xl mb-4">🧬</div>
+                    <h3 class="text-lg font-semibold mb-2">Autonomous Factory Sites</h3>
+                    <p class="text-secondary-gray text-sm">Real-time RTSP/UDP flows prioritized under load without cloud dependency</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-border-gray hover-lift cursor-pointer">
+                    <div class="text-2xl mb-4">🧵</div>
+                    <h3 class="text-lg font-semibold mb-2">Multi-tenant Edge Gateway</h3>
+                    <p class="text-secondary-gray text-sm">3-node namespace swarm auto-balances TCP drops by tenant latency targets</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-border-gray hover-lift cursor-pointer">
+                    <div class="text-2xl mb-4">📉</div>
+                    <h3 class="text-lg font-semibold mb-2">Cost-Driven CDN Tuning</h3>
+                    <p class="text-secondary-gray text-sm">Reroutes packets based on egress cost, learned from live billing metrics</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">How It Works</h2>
+                <p class="text-xl text-secondary-gray">Technical walkthrough of autonomous optimization</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold">1</span>
+                    </div>
+                    <h3 class="font-semibold mb-2">eBPF/XDP Load</h3>
+                    <p class="text-sm text-secondary-gray">CO-RE XDP program inspects, classifies, drops/mirrors/redirects at NIC ingress</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-success-green rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold">2</span>
+                    </div>
+                    <h3 class="font-semibold mb-2">Maps Export Metrics</h3>
+                    <p class="text-sm text-secondary-gray">Per-CPU verdict counts, latency buckets exported to monitoring systems</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold">3</span>
+                    </div>
+                    <h3 class="font-semibold mb-2">Genetic Optimizer</h3>
+                    <p class="text-sm text-secondary-gray">NSGA-III evolves config across latency, drops, cost, energy objectives</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold">4</span>
+                    </div>
+                    <h3 class="font-semibold mb-2">Real-time Updates</h3>
+                    <p class="text-sm text-secondary-gray">Live fitness frontier + packet telemetry updates dashboards continuously</p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <p class="text-secondary-gray italic">No kernel modules, no reboot. Only libbpf, bpftool, and Prometheus.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Developer Section -->
+    <section id="docs" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Developer Resources</h2>
+                <p class="text-xl text-secondary-gray">Dive into the technical implementation</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- eBPF Code Example -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-border-gray">
+                    <h3 class="font-semibold mb-4">eBPF/XDP Implementation</h3>
+                    <div class="code-block rounded-lg p-4 text-sm overflow-x-auto">
+<pre><code>SEC("xdp")
+int adaptive_guard(struct xdp_md *ctx) {
+    struct xdp_policy *p = bpf_map_lookup_elem(&policy, &zero);
+    if (p && p->drop_udp_port && udp->dest == p->drop_udp_port)
+        return XDP_DROP;
+    return XDP_PASS;
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Python GA Code Example -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-border-gray">
+                    <h3 class="font-semibold mb-4">Genetic Algorithm Optimization</h3>
+                    <div class="code-block rounded-lg p-4 text-sm overflow-x-auto">
+<pre><code># NSGA-III evolution: minimize p95 latency and drop ratio
+pop = toolbox.population(n=50)
+for gen in range(NGEN):
+    mutate(pop); evaluate(pop); 
+    update_metrics(); select()</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center space-x-4 mt-8">
+                <button class="bg-primary-gray text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors">
+                    📂 View GitHub
+                </button>
+                <button class="bg-white text-primary-gray px-6 py-3 rounded-lg border border-border-gray hover:bg-gray-50 transition-colors">
+                    📚 Technical Whitepaper
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Customer Success Stories</h2>
+                <p class="text-xl text-secondary-gray">Proven results in production environments</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-border-gray">
+                    <div class="text-4xl mb-4">💬</div>
+                    <p class="text-lg mb-6 italic">"We reduced average packet delay from 38ms to 11ms with zero manual tuning. Autonomic Edge transformed our remote diagnostics network."</p>
+                    <div class="text-sm">
+                        <div class="font-semibold">CTO, VitalPath Healthcare</div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-border-gray">
+                    <div class="text-4xl mb-4">💬</div>
+                    <p class="text-lg mb-6 italic">"It's like having an AI co-pilot for my network. The GA learns what works better than I ever could in real time."</p>
+                    <div class="text-sm">
+                        <div class="font-semibold">Edge Infrastructure Lead, GovNet</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact/Pilot Form -->
+    <section class="py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Start Your Pilot Program</h2>
+                <p class="text-xl text-secondary-gray">14-day live evaluation in your environment</p>
+            </div>
+            
+            <div class="bg-white rounded-xl p-8 shadow-sm border border-border-gray">
+                <form class="space-y-6">
+                    <!-- TODO: Implement form submission logic -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Industry</label>
+                            <select class="w-full px-4 py-3 border border-border-gray rounded-lg focus:ring-2 focus:ring-accent-blue focus:border-transparent">
+                                <option>Healthcare</option>
+                                <option>Defense/Government</option>
+                                <option>Manufacturing</option>
+                                <option>Financial Services</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Use Case</label>
+                            <select class="w-full px-4 py-3 border border-border-gray rounded-lg focus:ring-2 focus:ring-accent-blue focus:border-transparent">
+                                <option>Remote Site Optimization</option>
+                                <option>DDoS Protection</option>
+                                <option>Multi-tenant Gateway</option>
+                                <option>Cost Optimization</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Deployment Type</label>
+                            <select class="w-full px-4 py-3 border border-border-gray rounded-lg focus:ring-2 focus:ring-accent-blue focus:border-transparent">
+                                <option>Real Hardware</option>
+                                <option>GNS3 Simulation</option>
+                                <option>Container/Namespace</option>
+                                <option>Virtual Environment</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Network Size</label>
+                            <select class="w-full px-4 py-3 border border-border-gray rounded-lg focus:ring-2 focus:ring-accent-blue focus:border-transparent">
+                                <option>Small (< 100 nodes)</option>
+                                <option>Medium (100-1000 nodes)</option>
+                                <option>Large (1000+ nodes)</option>
+                                <option>Enterprise Scale</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Contact Email</label>
+                        <input type="email" class="w-full px-4 py-3 border border-border-gray rounded-lg focus:ring-2 focus:ring-accent-blue focus:border-transparent" data-mock="true" placeholder="your.email@company.com">
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button type="submit" class="bg-success-green text-white px-8 py-4 rounded-lg text-lg font-medium hover:bg-green-600 transition-colors">
+                            🟢 Start 14-Day Pilot
+                        </button>
+                        <button type="button" class="bg-white text-primary-gray px-8 py-4 rounded-lg text-lg font-medium border border-border-gray hover:bg-gray-50 transition-colors">
+                            📞 Book a Tech Call
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-border-gray py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <svg class="w-6 h-6 text-accent-blue" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                        <span class="font-semibold">Autonomic Edge</span>
+                    </div>
+                    <p class="text-secondary-gray text-sm">Self-optimizing network agents for mission-critical environments.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-secondary-gray">
+                        <li><a href="#" class="hover:text-primary-gray transition-colors">GitHub Repository</a></li>
+                        <li><a href="#" class="hover:text-primary-gray transition-colors">Technical Documentation</a></li>
+                        <li><a href="#" class="hover:text-primary-gray transition-colors">API Reference</a></li>
+                        <li><a href="#" class="hover:text-primary-gray transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-secondary-gray">
+                        <li><a href="#" class="hover:text-primary-gray transition-colors">About</a></li>
+                        <li><a href="#" class="hover:text-primary-gray transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-primary-gray transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-primary-gray transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <ul class="space-y-2 text-sm text-secondary-gray">
+                        <li><a href="#" class="hover:text-primary-gray transition-colors">LinkedIn</a></li>
+                        <li><a href="#" class="hover:text-primary-gray transition-colors">Twitter</a></li>
+                        <li><a href="#" class="hover:text-primary-gray transition-colors">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-border-gray mt-8 pt-8 text-center text-sm text-secondary-gray">
+                <p>&copy; 2024 Autonomic Edge. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // TODO: Implement business logic, API calls, or state management
+        (function() {
+            // Smooth scroll for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Add fade-in animation to elements when they come into view
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-up');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            // Observe elements for animation
+            document.querySelectorAll('section > div').forEach(el => {
+                observer.observe(el);
+            });
+        })();
+    </script>
+</body>
+</html>
