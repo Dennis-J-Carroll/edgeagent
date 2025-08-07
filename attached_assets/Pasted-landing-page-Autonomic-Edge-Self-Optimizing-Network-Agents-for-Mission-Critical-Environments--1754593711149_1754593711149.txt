@@ -1,0 +1,197 @@
+landing page
+
+“Autonomic Edge”
+Self-Optimizing Network Agents for Mission-Critical Environments
+
+🧬 Ideal Landing Page — Full Breakdown (Extreme Detail)
+
+🔝 
+1. Hero Section (First Fold)
+Headline (Positioning Statement):
+Real-time, self-optimizing edge routers.
+Powered by eBPF. Tuned by AI. Proven in healthcare, defense, and remote ops.
+Subheadline (Value Prop):
+Replace reactive firewalls, static QoS, and human-tweaked routing with autonomous dataplane agents that evolve in real-time to meet your SLOs.
+Call to Action (CTA):
+🟢 Button: “Request a Demo”
+
+
+⚪ Secondary: “See Live Metrics” → opens Grafana demo link
+
+
+Background Visual (non-glossy):
+3D mesh or flow-diagram animation showing:
+
+
+Nodes exchanging packets
+
+
+AI loop adapting policies
+
+
+Metrics flowing into dashboards
+
+
+
+🛡 
+2. Core Value Pillars (3 cards)
+Each card is visually clickable, scrolls in with animation, and opens a modal with tech depth:
+🧠 Autonomic Packet Intelligence
+Real-time control loop over XDP
+
+
+Fitness-based mutation of routing, filtering, and mirroring
+
+
+Deploys without kernel patching or reboot
+
+
+🔬 Deep Observability Built-In
+eBPF map metrics streamed via Cloudflare exporter to Prometheus
+
+
+Grafana dashboards expose latency, drops, throughput, fitness curves
+
+
+Correlates protocol behavior with objective performance
+
+
+🧪 Simulation-Grade Confidence
+Labs validated in GNS3 & namespaces with traffic injectors (HL7, FHIR, RTP)
+
+
+Failure injection, latency shaping, link saturation included
+
+
+Compare “static config” vs “learned behavior” performance
+
+
+
+🧭 
+3. Live Demo Pane (Interactive Frame)
+Split screen:
+📈 Left: Live Grafana Dashboard Embed
+Tabs: “Packet Flow,” “Fitness Evolution,” “Latency Budget”
+
+
+Real Prometheus data (or pre-recorded demo using timeshifted playback)
+
+
+📊 Right: Mutation Log Console
+Text stream of GA activity:
+🧪 
+4. Use Case Grid: Show Real Scenarios
+6 Cards (clickable):
+
+
+Use Case
+Description
+🏥 Remote Clinic Optimizer
+Learns how to prioritize FHIR + PACS over VoIP + admin traffic
+🛡 DDoS Frontline Agent
+Drops junk traffic in microseconds at ingress, evolves filters during attack
+🛰 Military/Edge Deployments
+Tunnels around degraded links, rewrites routing on-site, no human in loop
+🧬 Autonomous Factory Sites
+Real-time RTSP/UDP flows prioritized under load without cloud dependency
+🧵 Multi-tenant Edge Gateway
+3-node namespace swarm auto-balances TCP drops by tenant latency targets
+📉 Cost-Driven CDN Tuning
+Reroutes packets based on egress cost, learned from live billing metrics
+
+🧬 
+5. How It Works (Tech-Driven Walkthrough)
+A 4-step visualization scroll panel:
+🧱 eBPF/XDP loads at NIC ingress
+
+
+CO-RE XDP program inspects, classifies, drops/mirrors/redirects
+
+
+📊 Maps export metrics
+
+
+Per-CPU verdict counts, latency buckets
+
+
+🧠 Genetic Optimizer runs
+
+
+NSGA-III evolves config across latency, drops, cost, energy
+
+
+📈 Dashboards update in real-time
+
+
+Live fitness frontier + packet telemetry
+
+
+Footnote:
+“No kernel modules, no reboot. Only libbpf, bpftool, and Prometheus.”
+
+🔧 
+6. Developer Mode (Link to GitHub/Docs)
+SEC("xdp")
+int adaptive_guard(struct xdp_md *ctx) {
+    struct xdp_policy *p = bpf_map_lookup_elem(&policy, &zero);
+    if (p && p->drop_udp_port && udp->dest == p->drop_udp_port)
+        return XDP_DROP;
+    return XDP_PASS;
+}
+# NSGA-III evolution: minimize p95 latency and drop ratio
+pop = toolbox.population(n=50)
+for gen in range(NGEN):
+    mutate(pop); evaluate(pop); update_metrics(); select()
+Buttons:
+📂 View GitHub → dennis/edge-autonomic
+
+
+📚 Read Technical Whitepaper
+
+
+7. Social Proof / Case Studies
+2–3 featured logos or testimonials:
+💬 “We reduced average packet delay from 38ms to 11ms with zero manual tuning. Autonomic Edge transformed our remote diagnostics network.”
+— CTO, VitalPath Healthcare
+💬 “It’s like having an AI co-pilot for my network. The GA learns what works better than I ever could in real time.”
+— Edge Infrastructure Lead, GovNet
+
+📬 
+8. Contact or Start a Pilot
+Simple intake form:
+Industry
+
+
+Use case
+
+
+Deployment type (namespace, GNS3, real hardware)
+
+
+Network size
+
+
+Contact info
+
+
+CTA:
+🟢 Start Pilot → 14-day live evaluation
+⚪ Book a Tech Call
+
+📚 
+9. Footer (With Dev Audience Links)
+GitHub Repo: github.com/dennis/edge-autonomic
+
+
+Technical Docs: /docs/api/
+
+
+Blog: “How I Used eBPF to Tune Packet Paths Without Touching iptables”
+
+
+LinkedIn/Twitter/Email
+
+
+
+
+—
