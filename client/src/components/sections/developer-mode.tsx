@@ -4,19 +4,32 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export function DeveloperModeSection() {
-  const xdpCode = `SEC("xdp")
-int adaptive_guard(struct xdp_md *ctx) {
-    struct xdp_policy *p = bpf_map_lookup_elem(&policy, &zero);
-    if (p && p->drop_udp_port && udp->dest == p->drop_udp_port)
-        return XDP_DROP;
-    return XDP_PASS;
-}`;
+  const agentCode = `from edge_dynamics.edge_agent import EdgeAgent
 
-  const pythonCode = `# NSGA-III evolution: minimize p95 latency and drop ratio
-pop = toolbox.population(n=50)
-for gen in range(NGEN):
-    mutate(pop); evaluate(pop); 
-    update_metrics(); select()`;
+agent = EdgeAgent()
+agent.start()
+
+# Enqueue IoT telemetry — batching is automatic
+agent.enqueue("sensors.temp", {"device": "node-42", "value": 73.1})
+agent.enqueue("sensors.gps",  {"lat": 37.77, "lon": -122.41})
+
+# BackpressureGate: proportional delay ramp when queue fills
+# DLM: retrains zstd dict on ratio drift — zero manual tuning
+# CircuitBreaker: trips on collector failure, auto-recovers
+# DiskBuffer: SQLite store-and-forward — zero data loss`;
+
+  const collectorCode = `# Wire protocol: [4B len][JSON header][compressed payload]
+# Header: { topic, dict_id, count, raw_len, comp_len, hmac }
+#
+# Compression: zstd dict-based — up to 15x on JSON telemetry
+# The DLM trains per-topic dicts and hot-swaps via SIGHUP
+#
+# Security: HMAC verified BEFORE decompression
+#   → attacker-controlled bytes never enter the decompressor
+#   → immune to zip-bomb and parser-confusion attacks
+#
+# Start the collector:
+#   python -m edge_dynamics.collector_server`;
 
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
@@ -39,11 +52,11 @@ for gen in range(NGEN):
           >
             <Card className="bg-gray-900 text-white">
               <CardHeader className="border-b border-gray-700">
-                <CardTitle className="text-white">eBPF/XDP Implementation</CardTitle>
+                <CardTitle className="text-white">Edge Agent</CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <pre className="text-sm text-gray-300 font-mono overflow-x-auto">
-                  <code>{xdpCode}</code>
+                <pre className="text-sm text-gray-300 font-mono overflow-x-auto whitespace-pre-wrap">
+                  <code>{agentCode}</code>
                 </pre>
               </CardContent>
             </Card>
@@ -57,11 +70,11 @@ for gen in range(NGEN):
           >
             <Card className="bg-gray-900 text-white">
               <CardHeader className="border-b border-gray-700">
-                <CardTitle className="text-white">NSGA-III Evolution</CardTitle>
+                <CardTitle className="text-white">Collector Server</CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <pre className="text-sm text-gray-300 font-mono overflow-x-auto">
-                  <code>{pythonCode}</code>
+                <pre className="text-sm text-gray-300 font-mono overflow-x-auto whitespace-pre-wrap">
+                  <code>{collectorCode}</code>
                 </pre>
               </CardContent>
             </Card>

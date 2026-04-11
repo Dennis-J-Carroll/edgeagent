@@ -4,40 +4,60 @@ export function HowItWorksSection() {
   const steps = [
     {
       number: 1,
-      title: "eBPF/XDP loads at NIC ingress",
-      description: "CO-RE XDP program inspects, classifies, drops/mirrors/redirects packets at the lowest possible level in the network stack.",
-      features: ["Zero-copy packet processing", "Sub-microsecond decision latency", "Hardware offload compatible"],
-      image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400",
+      title: "Messages arrive at the edge",
+      description:
+        "The edge agent receives IoT telemetry, normalizes volatile headers to maximize compression, and buffers messages per topic. Batches flush when BATCH_MAX messages are queued or BATCH_MS milliseconds have elapsed — whichever comes first.",
+      features: [
+        "Per-topic message batching with configurable thresholds",
+        "Volatile header stripping (e.g. X-Amzn-Trace-Id) before compression",
+        "BackpressureGate: proportional delay ramp before data is dropped",
+      ],
       bgColor: "bg-blue-500",
+      accentColor: "border-blue-200 bg-blue-50",
       reverse: false,
     },
     {
       number: 2,
-      title: "Maps export metrics",
-      description: "Per-CPU verdict counts, latency buckets, and performance data stream continuously to monitoring systems.",
-      features: ["Real-time Prometheus metrics", "Histogram-based latency tracking", "Zero-overhead telemetry"],
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400",
+      title: "Adaptive dictionary compression",
+      description:
+        "Each topic gets a zstandard dictionary trained on its own data. The DictionaryLifecycleManager monitors compression ratio using EMA-based drift detection and triggers background retraining when the data distribution shifts — with zero downtime via blue/green version swaps.",
+      features: [
+        "zstd per-topic dictionaries — up to 15× compression on JSON telemetry",
+        "EMA drift detection triggers retrain when ratio degrades ≥20%",
+        "Blue/green swap: in-flight batches always decompressible",
+      ],
       bgColor: "bg-emerald-500",
+      accentColor: "border-emerald-200 bg-emerald-50",
       reverse: true,
     },
     {
       number: 3,
-      title: "Genetic Optimizer runs",
-      description: "NSGA-III evolves configuration across latency, drops, cost, and energy objectives simultaneously.",
-      features: ["Multi-objective optimization", "Pareto-optimal solutions", "Real-time policy adaptation"],
-      image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400",
+      title: "Secure framing and resilient send",
+      description:
+        "Each compressed batch is wrapped in a length-prefixed frame, signed with HMAC-SHA256, and sent via the ConnectionPool. If the collector is unreachable, the circuit breaker trips and the frame is persisted to SQLite for automatic recovery when connectivity returns.",
+      features: [
+        "HMAC-SHA256 per-frame signing with configurable algorithm",
+        "ConnectionPool: socket reuse eliminates TCP handshake overhead",
+        "SQLite store-and-forward: zero data loss through full outages",
+      ],
       bgColor: "bg-purple-500",
+      accentColor: "border-purple-200 bg-purple-50",
       reverse: false,
     },
     {
       number: 4,
-      title: "Dashboards update in real-time",
-      description: "Live fitness frontier + packet telemetry provide complete visibility into system performance and optimization progress.",
-      features: [],
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400",
+      title: "Collector receives and hot-reloads",
+      description:
+        "The collector terminates mTLS, verifies HMAC before decompression (preventing zip-bomb attacks), decompresses with the matching dictionary, and writes output to per-topic JSONL files. A SIGHUP signal triggers hot-reload of retrained dictionaries without restarting.",
+      features: [
+        "mTLS termination on every agent connection",
+        "HMAC-first verification — untrusted bytes are never decompressed",
+        "SIGHUP hot-reload: dictionary updates go live in milliseconds",
+      ],
       bgColor: "bg-orange-500",
+      accentColor: "border-orange-200 bg-orange-50",
       reverse: true,
-      footnote: "No kernel modules, no reboot. Only libbpf, bpftool, and Prometheus.",
+      footnote: "No data loss. No manual tuning. Only a running agent and a collector.",
     },
   ];
 
@@ -73,25 +93,27 @@ export function HowItWorksSection() {
                   <h3 className="text-xl font-semibold text-gray-900">{step.title}</h3>
                 </div>
                 <p className="text-gray-600 mb-4">{step.description}</p>
-                {step.features.length > 0 && (
-                  <ul className="text-sm text-gray-500 space-y-1">
-                    {step.features.map((feature, featureIndex) => (
-                      <li key={featureIndex}>• {feature}</li>
-                    ))}
-                  </ul>
-                )}
+                <ul className="text-sm text-gray-500 space-y-1">
+                  {step.features.map((feature, featureIndex) => (
+                    <li key={featureIndex}>• {feature}</li>
+                  ))}
+                </ul>
                 {step.footnote && (
                   <div className="text-sm text-gray-500 italic border-l-2 border-gray-300 pl-4 mt-4">
                     "{step.footnote}"
                   </div>
                 )}
               </div>
+              {/* Inline diagram tile — no external image dependency */}
               <div className="lg:w-1/2">
-                <img
-                  src={step.image}
-                  alt={`${step.title} visualization`}
-                  className="w-full h-48 object-cover rounded-lg shadow-lg"
-                />
+                <div className={`w-full h-48 rounded-lg border-2 ${step.accentColor} flex items-center justify-center shadow-lg`}>
+                  <div className="text-center px-8">
+                    <div className={`w-12 h-12 ${step.bgColor} rounded-full flex items-center justify-center mx-auto mb-3`}>
+                      <span className="text-white font-bold text-xl">{step.number}</span>
+                    </div>
+                    <p className="text-sm font-medium text-gray-700">{step.title}</p>
+                  </div>
+                </div>
               </div>
             </motion.div>
           ))}
